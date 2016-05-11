@@ -21,7 +21,7 @@ const GET_INFO_BASE_URL = 'https://www.googleapis.com/youtube/v3/videos?id=';
 
       let info = {
         videoId: videoId,
-        infoTitle: infoTitle,
+        title: infoTitle,
         thumbnailSrc: thumbnailSrc,
         duration: duration
       };

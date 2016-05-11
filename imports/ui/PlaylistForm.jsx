@@ -14,7 +14,18 @@ export default class PlaylistForm extends Component {
 
     this.state = {
       songInFormCounter: 1,
-    }
+      songsInForm: [
+        {
+          id: 0,
+          html: (
+              <div key={0}>
+                <input id="song0" placeholder="Enter videoId" />
+                <button onClick={this.removeSongFromAddSongField.bind(this, 0)}>Remove Song</button>
+              </div>
+          )
+        }
+      ],
+    } 
 
     this.addPlaylist = this.addPlaylist.bind(this);
     this.addSongFieldToForm = this.addSongFieldToForm.bind(this);
@@ -32,41 +43,45 @@ export default class PlaylistForm extends Component {
       console.log("playlist name cannot be empty");
     } else {
       let videoIds = [];
-      for (let i = 0; i < this.state.songInFormCounter; i++) {
-        let videoId = document.getElementById('song'+i).value;
+      let numID = 0;
+      for (let i = 0; i < this.state.songsInForm.length; i++) {
+        let id = this.state.songsInForm[i].id;
+        let videoId = document.getElementById('song' + id).value;
         videoIds.push(videoId);
+        document.getElementById('song' + id).value = '';
       }
 
-      let playlistId = '';
+      // after videoIds are loaded into the array, make the songsInForm show only 1 input
+      this.state.songsInForm.length = 1;
+
+      let playlistID = '';
      
       let createPlaylist = new Promise(function(resolve, reject) {
         resolve(Playlists.insert({name: name}, function(err, _id) {
           return(_id)
         }));
-      }).then(function(playlistID) {
-        playlistId = playlistID;
+      }).then(function(_id) {
+        playlistID = _id;
         return Promise.all(videoIds.map(function(id) {
           return getYTDataFromVideo(id);
         }));
       }).then(function(songArr) {
-        console.log("!!!!!!!!!!!!songArr", songArr);
         return Promise.all(songArr.map(function(songObj) {
           return new Promise(function(resolve, reject) {
             resolve(Songs.insert(songObj, function(err, songID) {
               if (err) { console.log("ERROR in addSongToPlaylist(): " + err); }
-              songObj.song_id = songID;
-              console.log(songObj);
             }));
-          })
+          }).then(function(songID) {
+              songObj.song_id = songID;
+              return songObj;
+          });
         }));
       }).then(function(completedSongObj) {
-        console.log("!!!!!!!!!!!!COMPLETEDSONGOBJ", completedSongObj);
+        Playlists.update(playlistID, {
+          $push: { songs: { $each: completedSongObj } }
+        });
+
       });
-
-      // TODO(Dan): after insert the callback function is automatically being returned.
-      // for example Songs.insert(_, function(err, songId) {}) auto returns songId.
-      // need to figure out whats up with this.
-
 
     }
     // Clear form
@@ -75,23 +90,44 @@ export default class PlaylistForm extends Component {
 
   addSongFieldToForm(evt) {
     evt.preventDefault();
+
+    let songInput = this.state.songsInForm;
+    songInput.push({
+      id: this.state.songInFormCounter,
+      html: (
+      <div key={this.state.songInFormCounter}>
+        <input id={"song" + (this.state.songInFormCounter)} placeholder="Enter videoId" />
+        <button onClick={this.removeSongFromAddSongField.bind(this, this.state.songInFormCounter)}>Remove Song</button>
+      </div>
+    )});
+
     this.setState({
-      songInFormCounter: this.state.songInFormCounter + 1
+      songInFormCounter: this.state.songInFormCounter + 1,
+      songsInForm: songInput
     });
   }
 
-  removeSongFromAddSongField(evt) {
+  removeSongFromAddSongField(id, evt) {
     evt.preventDefault();
+
+    let songFields = this.state.songsInForm;
+    for (let i = 0; i < this.state.songsInForm.length; i++) {
+      if (this.state.songsInForm[i].id === id) {
+        songFields.splice(i, 1);
+        break;
+      }
+    }
+
     this.setState({
-      songInFormCounter: this.state.songInFormCounter - 1
+      songsInForm: songFields
     });
+
   }
 
   render() {
-    // TODO(Dan): not sure if this is the most efficient way to do this in React.
-    let songsInForm = [];
-    for (let i = 0; i < this.state.songInFormCounter; i++) {
-      songsInForm.push((<input id={"song"+i} placeholder="Enter videoId" />));
+    let songInputs = [];
+    for (songForm of this.state.songsInForm){
+      songInputs.push(songForm.html);
     }
 
     return (
@@ -102,7 +138,7 @@ export default class PlaylistForm extends Component {
             ref="name"
             placeholder="Enter name of playlist"
           />
-          {songsInForm}
+          {songInputs}
           <button onClick={this.addSongFieldToForm}>Add Another Song</button>
           <input type="submit" value="Add Playlist" />
         </form>
