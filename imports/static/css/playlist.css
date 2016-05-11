@@ -1,0 +1,35 @@
+div, h3 {
+    margin: 0 auto;
+    padding: 0;
+}
+
+.playlist_song:hover {
+    background-color: blue;
+}
+
+.playlist_songs {
+    display: none;
+    margin-left: 15px;
+}
+
+.playlist_title_container {
+    width: 100%;
+    text-align: center;
+    background-color: blue;
+}
+
+.playlist_title {
+    width: 80%;
+    height: 35px;
+    display: inline-block;
+    background-color: orange;
+    padding-top: 17px;
+}
+
+.edit_btn {
+    width: 20%;
+    height: 35px;
+    float: right;
+    background-color: green;
+    padding-top: 17px;
+}
