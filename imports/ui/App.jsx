@@ -13,7 +13,6 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // this.playlist = ['xKMT44GBaUI', 'yWfsla_Uh80', 'Do_pJSGhWVg', 'LKiauCIJhv0', '1CTced9CMMk', 'ib_1ATfr8wM', '3lcblxEZFM8', 'ShGVCembq70'];
     this.currentIndex = 0;
     this.playlist;
 
@@ -61,7 +60,7 @@ class App extends Component {
         width: '640',
         videoId: '',
         playerVars: {
-          'controls': 0,
+          'controls': 1,
           'rel': 0,
           'showinfo': 0
         },
@@ -144,7 +143,7 @@ class App extends Component {
     function startAnimation() {
       pixelWidth += (405/seconds);
       if (pixelWidth >= 405) {
-        window.clearInterval(intervalID);
+        window.clearInterval(this.intervalID);
         loadingBar.style.width = "0px";
       } else {
         loadingBar.style.width = pixelWidth + "px";
