@@ -4,7 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
-import PlaylistForm from './PlaylistForm.jsx';
+// import PlaylistForm from './PlaylistForm.jsx';
 import Playlist from './Playlist.jsx';
 
 import { Playlists } from '../api/playlists.js';
@@ -187,8 +187,6 @@ class App extends Component {
             {this.renderPlaylists()}
           </ul>
         </div>
-
-        <PlaylistForm />
 
       </div>
     );

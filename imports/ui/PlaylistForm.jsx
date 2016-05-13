@@ -20,7 +20,7 @@ export default class PlaylistForm extends Component {
           html: (
               <div key={0}>
                 <input id="song0" placeholder="Enter videoId" />
-                <button onClick={this.removeSongFromAddSongField.bind(this, 0)}>Remove Song</button>
+                <button onClick={this.removeSongFromAddSongField.bind(this, 0)}> X </button>
               </div>
           )
         }
@@ -30,6 +30,13 @@ export default class PlaylistForm extends Component {
     this.addPlaylist = this.addPlaylist.bind(this);
     this.addSongFieldToForm = this.addSongFieldToForm.bind(this);
     this.removeSongFromAddSongField = this.removeSongFromAddSongField.bind(this);
+  }
+
+  // showForm from Header.jsx. Resets the form after PlaylistForm is closed.
+  componentWillReceiveProps(props) {
+    if (!this.props.showForm) {
+      this.state.songsInForm.length = 1;
+    }
   }
 
   addPlaylist(evt) {
@@ -85,7 +92,12 @@ export default class PlaylistForm extends Component {
 
     }
     // Clear form
-    ReactDOM.findDOMNode(this.refs.name).value = '';    
+    ReactDOM.findDOMNode(this.refs.name).value = '';  
+
+    // hide PlaylistForm after submitting. 
+    // TODO(Dan): this feels like a strange way to do 2 way data binding or essentially
+    // state inheritence. Find a less confusing way to do this.
+    this.props.extendHeader.showPlaylistForm(evt);
   }
 
   addSongFieldToForm(evt) {
@@ -97,7 +109,7 @@ export default class PlaylistForm extends Component {
       html: (
       <div key={this.state.songInFormCounter}>
         <input id={"song" + (this.state.songInFormCounter)} placeholder="Enter videoId" />
-        <button onClick={this.removeSongFromAddSongField.bind(this, this.state.songInFormCounter)}>Remove Song</button>
+        <button onClick={this.removeSongFromAddSongField.bind(this, this.state.songInFormCounter)}> X </button>
       </div>
     )});
 
@@ -132,6 +144,7 @@ export default class PlaylistForm extends Component {
 
     return (
       <div className="playlistFormContainer">
+        <h1>Create Playlist</h1>
         <form onSubmit={this.addPlaylist.bind(this)} >
           <input 
             type="text"
@@ -140,7 +153,7 @@ export default class PlaylistForm extends Component {
           />
           {songInputs}
           <button onClick={this.addSongFieldToForm}>Add Another Song</button>
-          <input type="submit" value="Add Playlist" />
+          <button type="submit">Add Playlist</button>
         </form>
       </div>
     );

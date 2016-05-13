@@ -1,4 +1,14 @@
 .playlistFormContainer {
-    margin-top: 65px;
-    margin-left: 40%;
+    /*margin-top: 65px;*/
+    /*margin-left: 40%;*/
+}
+
+.playlistFormContainer input {
+    min-width: 500px;
+    height: 25px;
+
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 2px solid black;
 }
