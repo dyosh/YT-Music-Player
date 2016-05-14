@@ -10,8 +10,10 @@ export default class Header extends Component {
   constructor() {
     super();
 
+    // showForm initialized to '' to prevent value from being passed to 
+    // PlaylistForm.componentWillReceiveProps() on the initial render.
     this.state = ({
-      showForm: false,
+      showForm: '',
     });
 
     this.showPlaylistForm = this.showPlaylistForm.bind(this);
@@ -20,15 +22,14 @@ export default class Header extends Component {
   showPlaylistForm(evt) {
     evt.preventDefault();
 
-    this.setState({ showForm: !this.state.showForm }, () => {
-      let playlistForm = ReactDOM.findDOMNode(this.refs.plistForm);
-      console.log("playlistForm", playlistForm);
-      if (this.state.showForm) {
-        playlistForm.style.display = 'block';
-      } else {
-        playlistForm.style.display = 'none';
-      }
-    });
+    if (this.state.showForm === '') {
+      this.setState({ showForm: true });
+    } else {
+      this.setState({
+        showForm: !this.state.showForm
+      });
+    }
+
   }
 
   render() {
@@ -37,19 +38,13 @@ export default class Header extends Component {
       <div>
         <nav>
           <ul>
-            <li className="nav__home">
-              <a href="">Home</a>
-            </li>        
             <li onClick={this.showPlaylistForm} className="nav__playlist">
               <a href="">New Playlist</a>
             </li>
           </ul>
         </nav>
 
-        <div ref="plistForm" className="playlistForm">
-          <div className="plistFormCancelBtn" onClick={this.showPlaylistForm}> X </div>
-          <PlaylistForm ref="plistForm" showForm={this.state.showForm} extendHeader={this} />
-        </div>
+        <PlaylistForm ref="plistForm" showForm={this.state.showForm} />
 
       </div>
     );

@@ -13,6 +13,7 @@ export default class PlaylistForm extends Component {
     super(props);
 
     this.state = {
+      showForm: false,
       songInFormCounter: 1,
       songsInForm: [
         {
@@ -29,14 +30,22 @@ export default class PlaylistForm extends Component {
 
     this.addPlaylist = this.addPlaylist.bind(this);
     this.addSongFieldToForm = this.addSongFieldToForm.bind(this);
+    this.toggleShowPlaylistForm = this.toggleShowPlaylistForm.bind(this);
     this.removeSongFromAddSongField = this.removeSongFromAddSongField.bind(this);
   }
 
   // showForm from Header.jsx. Resets the form after PlaylistForm is closed.
   componentWillReceiveProps(props) {
-    if (!this.props.showForm) {
+    console.log("PlaylistForm received Props", props);
+
+    // this.props.showForm !== this.state.showForm added to prevent updates when any other prop gets updated.
+    if (props.showForm === false && props.showForm === !this.state.showForm) {
+      this.toggleShowPlaylistForm();
       this.state.songsInForm.length = 1;
-    }
+    } else if (props.showForm === true && props.showForm === !this.state.showForm) {
+      this.toggleShowPlaylistForm();
+    } 
+
   }
 
   addPlaylist(evt) {
@@ -95,9 +104,8 @@ export default class PlaylistForm extends Component {
     ReactDOM.findDOMNode(this.refs.name).value = '';  
 
     // hide PlaylistForm after submitting. 
-    // TODO(Dan): this feels like a strange way to do 2 way data binding or essentially
-    // state inheritence. Find a less confusing way to do this.
-    this.props.extendHeader.showPlaylistForm(evt);
+    this.toggleShowPlaylistForm();
+     
   }
 
   addSongFieldToForm(evt) {
@@ -136,14 +144,34 @@ export default class PlaylistForm extends Component {
 
   }
 
+  toggleShowPlaylistForm(evt) {
+    if (evt) {
+      evt.preventDefault();
+    }
+
+    this.setState({ showForm: !this.state.showForm }, () => {
+      console.log("toggleShowPlaylistForm showForm: ", this.state.showForm);
+      let playlistForm = ReactDOM.findDOMNode(this.refs.playlistForm);
+      if (this.state.showForm) {
+        playlistForm.style.display = 'block';
+      } else {
+        playlistForm.style.display = 'none';
+      }
+    });
+  }
+
+
   render() {
     let songInputs = [];
     for (songForm of this.state.songsInForm){
       songInputs.push(songForm.html);
     }
 
+    console.log("PlaylistForm render() called");
+
     return (
-      <div className="playlistFormContainer">
+      <div ref="playlistForm" className="playlistFormContainer">
+        <div className="playlistCancelBtn" onClick={this.toggleShowPlaylistForm}> X </div>
         <h1>Create Playlist</h1>
         <form onSubmit={this.addPlaylist.bind(this)} >
           <input 

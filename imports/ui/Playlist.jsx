@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import App from './App.jsx';
 import Song from './Song.jsx';
+import PlaylistForm from './PlaylistForm.jsx';
 
 import { Playlists } from '../api/playlists.js';
 import { Songs } from '../api/songs.js';
@@ -23,16 +24,19 @@ export default class Playlist extends Component {
 
     this.addSongToPlaylist = this.addSongToPlaylist.bind(this);
     this.removePlaylist = this.removePlaylist.bind(this);
-    this.toggleShowSongs = this.toggleShowSongs.bind(this);
     this.getInfo = this.getInfo.bind(this);
   }
 
   convertToMilliseconds() {
-    
+
   }
 
-  displayEdit() {
+  displayEdit(playlist) {
     console.log("displayEdit pressed");
+    console.log(playlist);
+    let playlistToEdit = ReactDOM.findDOMNode(this.refs.plistForm);
+    playlistToEdit.style.display = 'block';
+
   }
 
   getInfo(videoId) {
@@ -66,18 +70,6 @@ export default class Playlist extends Component {
 
   removePlaylist() {
     Playlist.remove(this.props.playlist._id);
-  }
-
-  toggleShowSongs() {
-    // if (this.state.displaySongs === 'hidden') {
-    //   this.state.displaySongs = '';
-    // } else {
-    //   this.state.displaySongs = 'hidden';
-    // }
-
-    // this.setState({
-    //   showSongs: this.state.displaySongs,
-    // });
   }
 
   addSongToPlaylist(event) {
@@ -129,21 +121,6 @@ export default class Playlist extends Component {
     this.props.player.playlist = this.props.playlist.songs;
     this.props.player.currentIndex = 0;
     this.props.player.play();
-
-
-    // this.props.player.playlist.length = 0;
-    // this.props.playlist.songs.map((song) => {
-    //   this.props.player.playlist.push(song);
-    // });
-
-    // console.log(this.props.player.playlist);
-
-    // for (let song of this.props.playlist.songs) {
-    //   this.props.player.playlist.push(song.videoId);
-    // }
-
-    // this.props.player.currentIndex = 0;
-    // this.props.player.play();
   }
 
   removePlaylist() {
@@ -163,26 +140,27 @@ export default class Playlist extends Component {
 
   render() {
     return (
-      <li>
-        <div className="playlist_title_container">
-          <div className="playlist_title" ref="playlistTitle" onClick={this.toggleShowPlaylist.bind(this)}>
-            <h3>{this.props.playlist.name}</h3>
+        <li>
+          <div className="playlist_title_container">
+            <div className="playlist_title" ref="playlistTitle" onClick={this.toggleShowPlaylist.bind(this)}>
+              <h3>{this.props.playlist.name}</h3>
+            </div>
+            <div className="edit_btn" onClick={this.displayEdit.bind(this, this.props.playlist)}>Edit</div>          
           </div>
-          <div className="edit_btn" onClick={this.displayEdit.bind(this)}>Edit</div>
-        </div>
 
-        <div ref="plistSongs" className="playlist_songs">
-          <button onClick={this.removePlaylist.bind(this)}>Remove Playlist</button>
-          <button onClick={this.loadPlaylist.bind(this)}>Load Playlist</button>
-          <Song songs={this.props.playlist.songs} player={this.props.player} playlist={this.props.playlist}/>
-        </div>
-        <form onSubmit={this.addSongToPlaylist.bind(this)}>
-          <input placeholder="videoId here" ref="videoId"/> 
-          <input type="submit" value="videoId here" />
-        </form>
-      </li>
+          <div ref="plistSongs" className="playlist_songs">
+            <button onClick={this.removePlaylist.bind(this)}>Remove Playlist</button>
+            <button onClick={this.loadPlaylist.bind(this)}>Load Playlist</button>
+            <Song songs={this.props.playlist.songs} player={this.props.player} playlist={this.props.playlist}/>
+          </div>
+          <form onSubmit={this.addSongToPlaylist.bind(this)}>
+            <input placeholder="videoId here" ref="videoId"/> 
+            <input type="submit" value="videoId here" />
+          </form>
+        </li>
     );
   }
+
 }
 
 Playlist.propTypes = {
