@@ -17,6 +17,15 @@ export default class Header extends Component {
     });
 
     this.showPlaylistForm = this.showPlaylistForm.bind(this);
+    this.changeShowValue = this.changeShowValue.bind(this);
+  }
+
+  // used when PlaylistForm is closed from its own view.
+  changeShowValue(val) {
+    console.log("changeShowValue value:", val);
+    this.setState({
+      showForm: false
+    });
   }
 
   showPlaylistForm(evt) {
@@ -44,7 +53,7 @@ export default class Header extends Component {
           </ul>
         </nav>
 
-        <PlaylistForm ref="plistForm" showForm={this.state.showForm} />
+        <PlaylistForm ref="plistForm" changeShowValue={this.changeShowValue} showForm={this.state.showForm} />
 
       </div>
     );

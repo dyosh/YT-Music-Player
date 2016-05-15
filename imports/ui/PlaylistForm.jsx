@@ -15,37 +15,43 @@ export default class PlaylistForm extends Component {
     this.state = {
       showForm: false,
       songInFormCounter: 1,
-      songsInForm: [
-        {
-          id: 0,
-          html: (
-              <div key={0}>
-                <input id="song0" placeholder="Enter videoId" />
-                <button onClick={this.removeSongFromAddSongField.bind(this, 0)}> X </button>
-              </div>
-          )
-        }
-      ],
-    } 
+      songsInForm: [{
+        id: 0,
+        html: (
+          <div key={0}>
+            <input id={"song0"} placeholder="Enter videoId" />
+            <button onClick={this.removeSongFromAddSongField.bind(this, 0)}> X </button>
+          </div>
+        )
+      }],
+    }
 
     this.addPlaylist = this.addPlaylist.bind(this);
     this.addSongFieldToForm = this.addSongFieldToForm.bind(this);
-    this.toggleShowPlaylistForm = this.toggleShowPlaylistForm.bind(this);
+    this.resetForm = this.resetForm.bind(this);
     this.removeSongFromAddSongField = this.removeSongFromAddSongField.bind(this);
+    this.toggleShowPlaylistForm = this.toggleShowPlaylistForm.bind(this);
   }
 
   // showForm from Header.jsx. Resets the form after PlaylistForm is closed.
   componentWillReceiveProps(props) {
-    console.log("PlaylistForm received Props", props);
+    // console.log("PlaylistForm received Props", props);
 
     // this.props.showForm !== this.state.showForm added to prevent updates when any other prop gets updated.
     if (props.showForm === false && props.showForm === !this.state.showForm) {
       this.toggleShowPlaylistForm();
-      this.state.songsInForm.length = 1;
-    } else if (props.showForm === true && props.showForm === !this.state.showForm) {
-      this.toggleShowPlaylistForm();
+      this.resetForm();
     } 
+    else if (props.showForm === true && props.showForm === !this.state.showForm) {
+      this.toggleShowPlaylistForm();
 
+      // this.resetForm() added here to fix issue when edit button on playlist list item clicked. 
+      // the brought up form rendered properly but the value of the first songForm input was not
+      // working, it was always null despite text being inside the input. resettin here somehow fixes this.
+      // it worked with the header though, there must be some issue with the key value or something?
+      // TODO(dan): At some point figure out wtf is going on here and do a proper fix.
+      this.resetForm();
+    } 
   }
 
   addPlaylist(evt) {
@@ -57,18 +63,25 @@ export default class PlaylistForm extends Component {
     // creating a new playlist.
     if (name === '') { 
       console.log("playlist name cannot be empty");
+      this.resetForm();
     } else {
       let videoIds = [];
       let numID = 0;
       for (let i = 0; i < this.state.songsInForm.length; i++) {
         let id = this.state.songsInForm[i].id;
-        let videoId = document.getElementById('song' + id).value;
-        videoIds.push(videoId);
-        document.getElementById('song' + id).value = '';
+        let videoId = document.getElementById('song' + id).value.trim();
+
+        console.log("videoID inside addPlaylist() loop: ", videoId);
+
+        if (videoId !== '') {
+          videoIds.push(videoId);
+        }
       }
 
+      console.log("VIDEOIDS INSIDE addPlaylist()", videoIds);
+
       // after videoIds are loaded into the array, make the songsInForm show only 1 input
-      this.state.songsInForm.length = 1;
+      this.resetForm();
 
       let playlistID = '';
      
@@ -105,18 +118,19 @@ export default class PlaylistForm extends Component {
 
     // hide PlaylistForm after submitting. 
     this.toggleShowPlaylistForm();
-     
   }
 
   addSongFieldToForm(evt) {
-    evt.preventDefault();
+    if (evt) {
+      evt.preventDefault();
+    }
 
     let songInput = this.state.songsInForm;
     songInput.push({
       id: this.state.songInFormCounter,
       html: (
       <div key={this.state.songInFormCounter}>
-        <input id={"song" + (this.state.songInFormCounter)} placeholder="Enter videoId" />
+        <input id={"song" + this.state.songInFormCounter} placeholder="Enter videoId" />
         <button onClick={this.removeSongFromAddSongField.bind(this, this.state.songInFormCounter)}> X </button>
       </div>
     )});
@@ -144,6 +158,12 @@ export default class PlaylistForm extends Component {
 
   }
 
+  resetForm() {
+    this.setState({ songsInForm: [] }, () => {
+      this.addSongFieldToForm();
+    })
+  }
+
   toggleShowPlaylistForm(evt) {
     if (evt) {
       evt.preventDefault();
@@ -155,7 +175,9 @@ export default class PlaylistForm extends Component {
       if (this.state.showForm) {
         playlistForm.style.display = 'block';
       } else {
+        this.props.changeShowValue(false);
         playlistForm.style.display = 'none';
+        this.resetForm();
       }
     });
   }
@@ -166,8 +188,6 @@ export default class PlaylistForm extends Component {
     for (songForm of this.state.songsInForm){
       songInputs.push(songForm.html);
     }
-
-    console.log("PlaylistForm render() called");
 
     return (
       <div ref="playlistForm" className="playlistFormContainer">
