@@ -178,7 +178,11 @@ export default class Playlist extends Component {
               <div className="edit_btn" onClick={this.showPlaylistForm.bind(this, this.props.playlist)}>Edit</div>          
             </div>
 
+<<<<<<< HEAD
             <PlaylistForm ref="plistForm" changeShowValue={this.changeShowValue} showForm={this.state.showForm} playlistToEdit={this.props.playlist}/>
+=======
+            <PlaylistForm ref="plistForm" changeShowValue={this.changeShowValue} showForm={this.state.showForm} />
+>>>>>>> 352aa79bed823efd6eb424ef7668a30a42b716b6
 
             <div ref="plistSongs" className="playlist_songs">
               <button onClick={this.removePlaylist.bind(this)}>Remove Playlist</button>

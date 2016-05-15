@@ -41,6 +41,7 @@ export default class PlaylistForm extends Component {
     if (props.showForm === false && props.showForm === !this.state.showForm) {
       this.toggleShowPlaylistForm();
       this.resetForm();
+<<<<<<< HEAD
     } 
     else if (props.showForm === true && props.showForm === !this.state.showForm) {
       this.toggleShowPlaylistForm();
@@ -52,6 +53,13 @@ export default class PlaylistForm extends Component {
       // TODO(dan): At some point figure out wtf is going on here and do a proper fix.
       this.resetForm();
     } 
+=======
+    } 
+    else if (props.showForm === true && props.showForm === !this.state.showForm) {
+      this.toggleShowPlaylistForm();
+      this.resetForm();
+    } 
+>>>>>>> 352aa79bed823efd6eb424ef7668a30a42b716b6
   }
 
   addPlaylist(evt) {
@@ -75,6 +83,10 @@ export default class PlaylistForm extends Component {
 
         if (videoId !== '') {
           videoIds.push(videoId);
+<<<<<<< HEAD
+=======
+          // document.getElementById('song' + id).value = '';
+>>>>>>> 352aa79bed823efd6eb424ef7668a30a42b716b6
         }
       }
 
@@ -117,6 +129,7 @@ export default class PlaylistForm extends Component {
     ReactDOM.findDOMNode(this.refs.name).value = '';  
 
     // hide PlaylistForm after submitting. 
+    // this.props.changeShowValue(false);
     this.toggleShowPlaylistForm();
   }
 
@@ -159,9 +172,46 @@ export default class PlaylistForm extends Component {
   }
 
   resetForm() {
+<<<<<<< HEAD
     this.setState({ songsInForm: [] }, () => {
       this.addSongFieldToForm();
     })
+=======
+
+    console.log("length of songsInForm in resetForm(): ", this.state.songsInForm.length);
+
+    // for (let i = 0; i < this.state.songsInForm.length; i++) {
+    //   console.log("removing songsInForm at index", i);
+    //   let id = this.state.songsInForm[i].id;
+    //   document.getElementById("song" + id).value = null;
+    // }
+
+
+    this.setState({ songsInForm: [] }, () => {
+      this.addSongFieldToForm();
+    })
+
+
+    // this.state.songsInForm.length = 0;
+    // this.setState({
+    //   songInFormCounter: 1,
+    //   songsInForm: [
+    //     {
+    //       id: 0,
+    //       html: (
+    //           <div key={0}>
+    //             <input id="song0" placeholder="Enter videoId" />
+    //             <button onClick={this.removeSongFromAddSongField.bind(this, 0)}> X </button>
+    //           </div>
+    //       )
+    //     }
+    //   ]
+    // });
+
+    // this.state.songsInForm[0] = resetFormSong;
+    // this.state.songInFormCounter = 1;    
+    console.log("resetForm() songsInForm: ", this.state.songsInForm);
+>>>>>>> 352aa79bed823efd6eb424ef7668a30a42b716b6
   }
 
   toggleShowPlaylistForm(evt) {
@@ -184,11 +234,21 @@ export default class PlaylistForm extends Component {
 
 
   render() {
+
+    // if (this.props.playlist !== null) {
+    //   console.log("RECEIVED IN RENDER()", this.props.playlist);
+    // }
+
     let songInputs = [];
     for (songForm of this.state.songsInForm){
       songInputs.push(songForm.html);
     }
 
+<<<<<<< HEAD
+=======
+    console.log("PlaylistForm render() called with songInputs: ", songInputs);
+
+>>>>>>> 352aa79bed823efd6eb424ef7668a30a42b716b6
     return (
       <div ref="playlistForm" className="playlistFormContainer">
         <div className="playlistCancelBtn" onClick={this.toggleShowPlaylistForm}> X </div>
