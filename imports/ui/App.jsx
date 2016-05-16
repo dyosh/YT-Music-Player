@@ -38,8 +38,6 @@ class App extends Component {
 
   // initial load of playlist done here.
   componentWillReceiveProps(playlistProps) {
-    console.log("this.props.playlists", this.props.playlists);
-    console.log(playlistProps.playlists);
     this.playlist = playlistProps.playlists[0].songs;
   }
 
@@ -86,9 +84,6 @@ class App extends Component {
       thumbnailSrc: song.thumbnailSrc 
     });
 
-    console.log("song.videoId: ", song.videoId);
-    console.log(this.player);
-
     this.player.loadVideoById({videoId: song.videoId});
     this.player.playVideo();
   }
@@ -117,12 +112,10 @@ class App extends Component {
     }
 
     if (event.data === YT.PlayerState.BUFFERING || event.data === YT.PlayerState.PAUSED) {
-      console.log("WE WAITIN YO!");
       window.clearInterval(this.intervalID);
     }
 
     if (event.data === YT.PlayerState.PLAYING) {
-      console.log("WE PLAYING YO!");
       let seconds = this.player.getDuration();
       let currentPixelWidth = ((this.player.getCurrentTime() / seconds) * 405);
       this.startProgressBar(seconds, currentPixelWidth);

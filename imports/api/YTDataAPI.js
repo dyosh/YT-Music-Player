@@ -2,8 +2,6 @@ import { API_KEY } from '/API_KEYS.js';
 const GET_INFO_BASE_URL = 'https://www.googleapis.com/youtube/v3/videos?id=';
 
 export function getYTDataFromVideo(videoId) {
-  console.log("getInfo() called with videoId " + videoId);      
-
   let url =  GET_INFO_BASE_URL + videoId + "&key=" + API_KEY + "&part=snippet,contentDetails";
 
   let infoPromise = fetch(url).then(function(response) {

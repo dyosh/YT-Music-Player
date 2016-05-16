@@ -7,6 +7,7 @@ import PlaylistForm from './PlaylistForm.jsx';
 
 import { Playlists } from '../api/playlists.js';
 import { Songs } from '../api/songs.js';
+import { getYTDataFromVideo } from '../api/YTDataAPI.js';
 
 import { API_KEY } from '/API_KEYS.js';
 
@@ -25,7 +26,6 @@ export default class Playlist extends Component {
     };
 
     this.addSongToPlaylist = this.addSongToPlaylist.bind(this);
-    this.getInfo = this.getInfo.bind(this);
     this.removePlaylist = this.removePlaylist.bind(this);
     this.changeShowValue = this.changeShowValue.bind(this);
   }
@@ -33,42 +33,6 @@ export default class Playlist extends Component {
   convertToMilliseconds() {
 
   }
-
-  displayEdit(playlist) {
-    console.log("displayEdit pressed");
-    console.log(playlist);
-    let playlistToEdit = ReactDOM.findDOMNode(this.refs.plistForm);
-    playlistToEdit.style.display = 'block';
-  }
-
-  getInfo(videoId) {
-    console.log("getInfo() called with videoId " + videoId);      
-
-    let url =  GET_INFO_BASE_URL + videoId + "&key=" + API_KEY + "&part=snippet,contentDetails";
-
-    let infoPromise = fetch(url).then(function(response) {
-      return response.json();
-    }).then(function(response){
-      let infoResponse = response;
-
-      let infoTitle = infoResponse.items[0].snippet.title;
-      if (infoTitle.length > 15) {
-        infoTitle = infoTitle.substr(0,15) + "...";
-      }
-      let thumbnailSrc = infoResponse.items[0].snippet.thumbnails.high.url;
-      let duration = infoResponse.items[0].contentDetails.duration;
-
-      let info = {
-        infoTitle: infoTitle,
-        thumbnailSrc: thumbnailSrc,
-        duration: duration
-      };
-
-      return info;
-    }.bind(this));
-
-    return infoPromise;
-  }  
 
   removePlaylist() {
     Playlist.remove(this.props.playlist._id);
@@ -82,14 +46,10 @@ export default class Playlist extends Component {
     let thumbnailSrc = '';
 
     let gettingInfoPromise = new Promise(function(resolve, reject) {
-      resolve(this.getInfo(videoId));
+      resolve(getYTDataFromVideo(videoId));
     }.bind(this)).then(function(info) {
 
-      let songObj = {
-        videoId: videoId,
-        title: info.infoTitle,
-        thumbnailSrc: info.thumbnailSrc
-      };
+      let songObj = info;
 
       Songs.insert(songObj, function(err, songID) {
         if (err) { console.log("ERROR in addSongToPlaylist(): " + err); }
@@ -102,10 +62,10 @@ export default class Playlist extends Component {
             songs: 
               {
                 song_id: songID,
-                videoId: videoId,
-                title:  info.infoTitle,
-                thumbnailSrc: info.thumbnailSrc,
-                duration : info.duration
+                videoId: songObj.videoId,
+                title:  songObj.title,
+                thumbnailSrc: songObj.thumbnailSrc,
+                duration : songObj.duration
               }
           }
         });      
@@ -118,8 +78,6 @@ export default class Playlist extends Component {
   }
 
   loadPlaylist() {
-    console.log(this.props.playlist);
-
     this.props.player.playlist = this.props.playlist.songs;
     this.props.player.currentIndex = 0;
     this.props.player.play();
@@ -131,7 +89,6 @@ export default class Playlist extends Component {
 
   // used when PlaylistForm is closed from its own view.
   changeShowValue(val) {
-    console.log("changeShowValue value:", val);
     this.setState({
       showForm: val,
       playlistToEdit: ''
@@ -139,7 +96,6 @@ export default class Playlist extends Component {
   }
 
   showPlaylistForm(props, evt) {
-    console.log("showPlaylistForm with props", props);
     if (evt) {
       evt.preventDefault();
     }
@@ -178,11 +134,7 @@ export default class Playlist extends Component {
               <div className="edit_btn" onClick={this.showPlaylistForm.bind(this, this.props.playlist)}>Edit</div>          
             </div>
 
-<<<<<<< HEAD
             <PlaylistForm ref="plistForm" changeShowValue={this.changeShowValue} showForm={this.state.showForm} playlistToEdit={this.props.playlist}/>
-=======
-            <PlaylistForm ref="plistForm" changeShowValue={this.changeShowValue} showForm={this.state.showForm} />
->>>>>>> 352aa79bed823efd6eb424ef7668a30a42b716b6
 
             <div ref="plistSongs" className="playlist_songs">
               <button onClick={this.removePlaylist.bind(this)}>Remove Playlist</button>

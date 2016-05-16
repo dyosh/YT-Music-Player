@@ -22,7 +22,6 @@ export default class Header extends Component {
 
   // used when PlaylistForm is closed from its own view.
   changeShowValue(val) {
-    console.log("changeShowValue value:", val);
     this.setState({
       showForm: false
     });
@@ -42,7 +41,6 @@ export default class Header extends Component {
   }
 
   render() {
-    console.log("header render() showForm: ", this.state.showForm);
     return (
       <div>
         <nav>
