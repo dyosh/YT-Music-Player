@@ -1,5 +1,13 @@
-html, body {
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    height: 100%;
+    /*background-color: blue;*/
     background-color: #ECEFF1;
+    /*margin: 0 0 300px;*/
 }
 
 div, h1, input, img {
@@ -9,21 +17,34 @@ div, h1, input, img {
 
 .container {
     width: 100%;
-    background-color: #ECEFF1;
+    height: 100%;
+    /*background-color: orange;*/
 }
 
-.playlist_form {
-    margin-top: 60px;
-    text-align: center;
+.player_playlist_container {
+    display: inline-flex;
+    width: 100%;
+    /*background-color: orange;*/
+}
+
+.player_container {
+    width: 50%;
+}
+
+.playlist_container {
+    top: 35px;
+    /*width: 50%;*/
 }
 
 .player {
-    max-width: 640px;
+    width: 640px;
+    height: 549px;
     margin-top: 35px;
-    margin-left: 10%;
+    float: right;
+    /*margin-left: 10%;*/
     /*margin-right: 25%;*/
     position: relative;
-    display: inline-block;
+    /*display: inline-block;*/
 }
 
 .player__video {
@@ -37,15 +58,20 @@ div, h1, input, img {
 .player__song_details_left {
     float: left;
     width: 440px;
+    height: 176px;
 }
 
-.player__song_details_left h1 {
-    font-size: 33px;
+.player__song_title {
+    overflow: hidden;
+    position: relative;
+    font-size: 28px;
     font-weight: 500;
+    height: 34px;
+    width: 440px;
 }
 
-.player__song_details_left input {
-    margin-top: 10px;
+.player__song_details_right {
+    height: 176px;
 }
 
 .player__song_details_right img {
@@ -54,12 +80,22 @@ div, h1, input, img {
     float: right;
 }
 
+.player__volume {
+    padding-top: 15px;
+    position: relative;
+}
+
+.player__loading_container {
+    padding-top: 15px;
+    position: relative;
+}
+
 .player__loading {
     padding: 0;
     margin: 0;
-    width: 405px;
+    width: 440px;
     height: 13px;
-    background-color: #ECEFF1;
+    background-color: #afbec5;
 }
 
 .player__loading__progress {
@@ -75,19 +111,19 @@ div, h1, input, img {
 }
 
 .list_of_playlists {
-    min-width: 450px;
-    max-width: 450px;
-    margin-top: 35px;
-    margin-right: 4%;
-    float: right;
+    width: 450px;
+    float: left;
+    left: 3%;
+    position: relative;
+    top: 35px;
 }
 
 /*PLAYER CONTROLS*/
 .player_controls_container {
     width: 440px;
     display: inline-flex;
-    margin-top: 47px;
-    background-color: blue;
+    position: absolute;
+    bottom: 0;
 }
 
 .player_controls_prev {

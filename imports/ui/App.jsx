@@ -122,7 +122,7 @@ class App extends Component {
 
     if (event.data === YT.PlayerState.PLAYING) {
       let seconds = this.player.getDuration();
-      let currentPixelWidth = ((this.player.getCurrentTime() / seconds) * 405);
+      let currentPixelWidth = ((this.player.getCurrentTime() / seconds) * 440);
       this.startProgressBar(seconds, currentPixelWidth);
     }
   }
@@ -139,8 +139,8 @@ class App extends Component {
     this.intervalID = window.setInterval(startAnimation, 1000);
 
     function startAnimation() {
-      pixelWidth += (405/seconds);
-      if (pixelWidth >= 405) {
+      pixelWidth += (440/seconds);
+      if (pixelWidth >= 440) {
         window.clearInterval(this.intervalID);
         loadingBar.style.width = "0px";
       } else {
@@ -161,34 +161,48 @@ class App extends Component {
       <div className="container">
         <Header />
 
-        <div className="player">
-          <div className="player__video" id="player"></div>
-          <div className="player__song_details">
-            <div className="player__song_details_left">
-              <h1>{this.state.songTitle}</h1>
-              <input type="range" min="0" max="100" onChange={this.changeVolume} />
-              <div className="player__loading">
-                <div className="player__loading__progress" id="loadingBar"></div>
-              </div> 
+        <div className="player_playlist_container">
+
+          <div className="player_container">
+            <div className="player">
+              <div className="player__video" id="player"></div>
+              <div className="player__song_details">
+                <div className="player__song_details_left">
+                  <div className="player__song_title">
+                    <span>{this.state.songTitle}</span>
+                  </div>
+                  <div className="player__loading_container">
+                    <div className="player__loading">
+                      <div className="player__loading__progress" id="loadingBar"></div>
+                    </div> 
+                  </div>
+
+                  <div className="player__volume"> 
+                    <input type="range" min="0" max="100" onChange={this.changeVolume} />
+                  </div>
+
+                  <div className={"player_controls_container"}>
+                    <div className={"player_controls_prev"} onClick={this.playPrevious}>Previous</div>
+                    <div className={"player_controls_next"} onClick={this.playNext}>Next</div>
+                    <div className={"player_controls_restart"} onClick={this.restartCurrentSong}>Restart</div>
+                  </div>
+                </div>
+                <div className="player__song_details_right">
+                  <img src={this.state.thumbnailSrc} />
+                </div>
+              </div>
             </div>
-            <div className="player__song_details_right">
-              <img src={this.state.thumbnailSrc} />
+          </div>
+    
+          <div className="playlist_container">
+            <div className="list_of_playlists">      
+              <ul>
+                {this.renderPlaylists()}
+              </ul>
             </div>
           </div>
 
-          <div className={"player_controls_container"}>
-            <div className={"player_controls_prev"} onClick={this.playPrevious}>Previous</div>
-            <div className={"player_controls_next"} onClick={this.playNext}>Next</div>
-            <div className={"player_controls_restart"} onClick={this.restartCurrentSong}>Restart</div>
-          </div>
         </div>
-  
-        <div className="list_of_playlists">      
-          <ul>
-            {this.renderPlaylists()}
-          </ul>
-        </div>
-        
       </div>
     );
   }
