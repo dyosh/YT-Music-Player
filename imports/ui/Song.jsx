@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Playlists } from '../api/playlists.js';
+import { Songs } from '../api/songs.js';
 
 require('../static/css/song.css');
 
@@ -16,7 +17,9 @@ export default class Song extends Component {
   removeSongFromPlaylist(song, evt) {  
     if (evt) {
       evt.preventDefault();
-    }   
+    }
+
+    Songs.remove(song.song_id);
 
     Playlists.update(
       {'_id': this.props.playlist._id}, 
@@ -30,15 +33,42 @@ export default class Song extends Component {
     if (songs === undefined) {
       return
     } else {
-      return songs.map((song, i) => (
-        <div className="song_in_playlist">
-          <li key={i} onClick={this.playlistSongClicked.bind(this, i)}>
-            {song.title}
-            {song.duration}
-            <button onClick={this.removeSongFromPlaylist.bind(this, song)}>Remove Song</button>
-          </li>
-        </div>
-      ));
+      if (this.props.editable === 'true') {
+        return songs.map((song, i) => {
+          return (
+            <li key={i} onClick={this.playlistSongClicked.bind(this, i)} className="form_song_in_playlist">
+              <div className="form_song_title">
+                {song.title.substr(0,30) + " ..."}
+              </div>
+              <div className="rm_song_btn" onClick={this.removeSongFromPlaylist.bind(this, song)} >
+                DELETE
+              </div>
+            </li>
+          );
+        }); 
+      } else {
+        return songs.map((song, i) => {
+          let minutes = '--';
+          let seconds = '--';
+
+          if (!isNaN(song.duration)) {
+            minutes = parseInt(song.duration / 60);
+            seconds = song.duration - (minutes * 60);
+          }
+
+          return (
+            <li key={i} onClick={this.playlistSongClicked.bind(this, i)} className="song_in_playlist">
+              <span className="songTitle">
+                {song.title.substr(0,30) + " ..."}
+              </span>
+              <span className="songDuration">
+                { minutes + ":" + seconds }
+              </span>
+            </li>
+          );
+        });              
+      }
+
     }
   }
 

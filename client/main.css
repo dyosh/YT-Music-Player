@@ -1,3 +1,7 @@
+html, body {
+    background-color: #ECEFF1;
+}
+
 div, h1, input, img {
     margin: 0;
     padding: 0;
@@ -5,6 +9,7 @@ div, h1, input, img {
 
 .container {
     width: 100%;
+    background-color: #ECEFF1;
 }
 
 .playlist_form {
@@ -15,7 +20,7 @@ div, h1, input, img {
 .player {
     max-width: 640px;
     margin-top: 35px;
-    margin-left: 20%;
+    margin-left: 10%;
     /*margin-right: 25%;*/
     position: relative;
     display: inline-block;
@@ -62,7 +67,7 @@ div, h1, input, img {
     margin: 0;
     width: 0px;
     height: 13px;
-    background-color: #2196F3;
+    background-color: #1e2a2f;
 }
 
 .prev_next_btn {
@@ -72,8 +77,62 @@ div, h1, input, img {
 .list_of_playlists {
     min-width: 450px;
     max-width: 450px;
-    background-color: red;
     margin-top: 35px;
     margin-right: 4%;
     float: right;
+}
+
+/*PLAYER CONTROLS*/
+.player_controls_container {
+    width: 440px;
+    display: inline-flex;
+    margin-top: 47px;
+    background-color: blue;
+}
+
+.player_controls_prev {
+    cursor: default;
+    width: 33.3%;
+    height: 55px;
+    line-height: 55px;
+    text-align: center;
+    vertical-align: middle; 
+    background-color: #131d20;
+    color: #ECEFF1;
+}
+
+.player_controls_prev:hover {
+    background-color: #263238;
+}
+
+.player_controls_next {
+    cursor: default;
+    width: 33.3%;
+    height: 55px;
+    line-height: 55px;
+    text-align: center;
+    vertical-align: middle; 
+    background-color: #131d20;
+    color: #ECEFF1;
+    border-left: 3px solid #263238;
+    border-right: 3px solid #263238;    
+}
+
+.player_controls_next:hover {
+    background-color: #263238;
+}
+
+.player_controls_restart {
+    cursor: default;
+    width: 33.3%;
+    height: 55px;
+    line-height: 55px;
+    text-align: center;
+    vertical-align: middle; 
+    background-color: #131d20;
+    color: #ECEFF1;
+}
+
+.player_controls_restart:hover {
+    background-color: #263238;
 }

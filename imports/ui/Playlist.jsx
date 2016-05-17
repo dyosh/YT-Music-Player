@@ -54,9 +54,6 @@ export default class Playlist extends Component {
       Songs.insert(songObj, function(err, songID) {
         if (err) { console.log("ERROR in addSongToPlaylist(): " + err); }
         
-        console.log(songID);
-        // songObj.song_id = songID;
-
         Playlists.update(this.props.playlist._id, {
           $push: { 
             songs: 
@@ -125,29 +122,25 @@ export default class Playlist extends Component {
 
   render() {
     return (
-        <div>
-          <li>
-            <div className="playlist_title_container">
-              <div className="playlist_title" ref="playlistTitle" onClick={this.toggleShowPlaylist.bind(this)}>
-                <h3>{this.props.playlist.name}</h3>
-              </div>
-              <div className="edit_btn" onClick={this.showPlaylistForm.bind(this, this.props.playlist)}>Edit</div>          
-            </div>
-
-            <PlaylistForm ref="plistForm" changeShowValue={this.changeShowValue} showForm={this.state.showForm} playlistToEdit={this.props.playlist}/>
-
-            <div ref="plistSongs" className="playlist_songs">
-              <button onClick={this.removePlaylist.bind(this)}>Remove Playlist</button>
-              <button onClick={this.loadPlaylist.bind(this)}>Load Playlist</button>
-              <Song songs={this.props.playlist.songs} player={this.props.player} playlist={this.props.playlist}/>
-            </div>
-            <form onSubmit={this.addSongToPlaylist.bind(this)}>
-              <input placeholder="videoId here" ref="videoId"/> 
-              <input type="submit" value="videoId here" />
-            </form>
-          </li>
-
+      <li>
+        <div className="playlist_title_container">
+          <div className="playlist_title" ref="playlistTitle" onClick={this.toggleShowPlaylist.bind(this)}>
+            <h3>{this.props.playlist.name}</h3>
+          </div>
         </div>
+
+        <PlaylistForm ref="plistForm" changeShowValue={this.changeShowValue} showForm={this.state.showForm} playlistToEdit={this.props.playlist} />
+
+        <div ref="plistSongs" className="playlist_songs">
+          <div className="playlist_options">
+            <div className={"load_playlist_btn"} onClick={this.loadPlaylist.bind(this)}>Load Playlist</div>
+            <div className={"edit_playlist_btn"} onClick={this.showPlaylistForm.bind(this, this.props.playlist)}>Edit</div>    
+          </div>
+
+          <Song songs={this.props.playlist.songs} player={this.props.player} playlist={this.props.playlist}/>
+        </div>
+      </li>
+
     );
   }
 

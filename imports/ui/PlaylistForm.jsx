@@ -21,9 +21,11 @@ export default class PlaylistForm extends Component {
       songsInForm: [{
         id: 0,
         html: (
-          <div key={0}>
-            <input id={"song0"} placeholder="Enter videoId" />
-            <button onClick={this.removeSongFromAddSongField.bind(this, 0)}> X </button>
+          <div className={"input_song_container"} key={0}>
+            <div className={"input_song_videoId_container"}>
+              <input className={"input_song_videoId"} id={"song0"} placeholder="Enter videoId" autoComplete="off" />
+            </div>
+            <div className={"input_song_rm_btn"} onClick={this.removeSongFromAddSongField.bind(this, 0)}>REMOVE</div>
           </div>
         )
       }],
@@ -54,7 +56,8 @@ export default class PlaylistForm extends Component {
         this.resetForm();
         this.displayExistingPlaylistForm(props.playlistToEdit);
         this.toggleShowPlaylistForm();
-      } else {
+      }
+      else {
         this.toggleShowPlaylistForm();
 
         // this.resetForm() added here to fix issue when edit button on playlist list item clicked. 
@@ -64,7 +67,10 @@ export default class PlaylistForm extends Component {
         // TODO(dan): At some point figure out wtf is going on here and do a proper fix.
         this.resetForm();
       }
-    } 
+    } else if (props.playlistToEdit !== undefined) {
+      // update the form display when an existing song is removed from a playlist
+      this.displayExistingPlaylistForm(props.playlistToEdit);
+    }
   }
 
   addPlaylist(evt) {
@@ -114,9 +120,11 @@ export default class PlaylistForm extends Component {
     songInput.push({
       id: this.state.songInFormCounter,
       html: (
-      <div key={this.state.songInFormCounter}>
-        <input id={"song" + this.state.songInFormCounter} placeholder="Enter videoId" />
-        <button onClick={this.removeSongFromAddSongField.bind(this, this.state.songInFormCounter)}> X </button>
+      <div className={"input_song_container"} key={this.state.songInFormCounter}>
+        <div className={"input_song_videoId_container"}>
+          <input className={"input_song_videoId"} id={"song" + this.state.songInFormCounter} placeholder="Enter videoId" autoComplete="off" />
+        </div>
+        <div className={"input_song_rm_btn"} onClick={this.removeSongFromAddSongField.bind(this, this.state.songInFormCounter)}>REMOVE</div>
       </div>
     )});
 
@@ -186,11 +194,14 @@ export default class PlaylistForm extends Component {
 
     this.setState({ showForm: !this.state.showForm }, () => {
       let playlistForm = ReactDOM.findDOMNode(this.refs.playlistForm);
+      let pageCover = ReactDOM.findDOMNode(this.refs.pageCover);
       if (this.state.showForm) {
         playlistForm.style.display = 'block';
+        pageCover.style.display = 'inline-flex';
       } else {
         this.props.changeShowValue(false);
         playlistForm.style.display = 'none';
+        pageCover.style.display = 'none';
         this.resetForm();
       }
     });
@@ -235,9 +246,11 @@ export default class PlaylistForm extends Component {
 
   }
 
-  removePlaylist() {
-    Playlist.remove(this.props.playlistToEdit._id);
-  } 
+  removePlaylist(playlist) {
+    Playlists.remove(playlist._id);
+  }
+
+  /*************************************************************************************/ 
 
   render() {
     let songInputs = [];
@@ -246,25 +259,34 @@ export default class PlaylistForm extends Component {
     }
 
     return (
-      <div ref="playlistForm" className="playlistFormContainer">
-        <div className="playlistCancelBtn" onClick={this.toggleShowPlaylistForm}> X </div>
-        <h1>Create Playlist</h1>
-        <form onSubmit={this.addPlaylist.bind(this)} >
-          <input 
-            type="text"
-            ref="name"
-            placeholder="Enter name of playlist"
-          />
+      <div>
+        <div ref="pageCover" className="page_container"></div>
 
-          <ul>
-            <Song songs={this.state.playlistToEdit.songs} playlist={this.state.playlistToEdit}/>
-          </ul>
+        <div ref="playlistForm" className="playlistFormContainer">
 
-          {songInputs}
 
-          <button onClick={this.addSongFieldToForm}>Add Another Song</button>
-          <button type="submit">Add Playlist</button>
-        </form>
+          <div className="playlistCancelBtn" onClick={this.toggleShowPlaylistForm}>X</div>
+          <form onSubmit={this.addPlaylist.bind(this)} >
+            <input 
+              className="input_playlist_name"
+              type="text"
+              ref="name"
+              placeholder="Enter name of playlist"
+            />
+
+            <ul>
+              <Song songs={this.state.playlistToEdit.songs} playlist={this.state.playlistToEdit} editable="true" />
+            </ul>
+
+            {songInputs}
+            <div className={"form_main_btns"}>
+              <div className={"add_song_input_btn"} onClick={this.addSongFieldToForm}>+videoId</div>
+              <div className={"submit_btn"} type="submit" onClick={this.addPlaylist.bind(this)}>Submit</div>
+              <div className={"delete_playlist_btn"} onClick={this.removePlaylist.bind(this, this.state.playlistToEdit)} type="submit">Delete Playlist</div>
+            </div>
+
+          </form>
+        </div>
       </div>
     );
   }

@@ -28,7 +28,9 @@ export default class Header extends Component {
   }
 
   showPlaylistForm(evt) {
-    evt.preventDefault();
+    if (evt) {
+      evt.preventDefault();
+    }
 
     if (this.state.showForm === '') {
       this.setState({ showForm: true });

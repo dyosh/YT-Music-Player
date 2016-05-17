@@ -28,6 +28,7 @@ class App extends Component {
     this.play = this.play.bind(this);
     this.playNext = this.playNext.bind(this);
     this.playPrevious = this.playPrevious.bind(this);
+    this.restartCurrentSong = this.restartCurrentSong.bind(this);
     this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
     this.changeVolume = this.changeVolume.bind(this);
 
@@ -106,6 +107,10 @@ class App extends Component {
     this.play();
   }
 
+  restartCurrentSong() {
+    this.player.seekTo(0);
+  }
+
   onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.ENDED) {
       this.playNext();
@@ -171,8 +176,11 @@ class App extends Component {
             </div>
           </div>
 
-          <button className="prev_next_btn" onClick={this.playPrevious}>Previous Song</button>
-          <button className="prev_next_btn" onClick={this.playNext}>Next Song</button>
+          <div className={"player_controls_container"}>
+            <div className={"player_controls_prev"} onClick={this.playPrevious}>Previous</div>
+            <div className={"player_controls_next"} onClick={this.playNext}>Next</div>
+            <div className={"player_controls_restart"} onClick={this.restartCurrentSong}>Restart</div>
+          </div>
         </div>
   
         <div className="list_of_playlists">      
@@ -180,7 +188,7 @@ class App extends Component {
             {this.renderPlaylists()}
           </ul>
         </div>
-
+        
       </div>
     );
   }

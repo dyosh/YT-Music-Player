@@ -1,12 +1,78 @@
+input {
+    font-size: 14px;
+    color: #ECEFF1;
+    box-sizing:border-box;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.input_playlist_name {
+    font-size: 22px !important;
+    margin-bottom: 16px !important;
+}
+
+.input_song_container {
+    width: 100%;
+    height: 35px;
+    border-bottom: 1px solid #263238;
+    display: flex;
+}
+
+.input_song_videoId_container {
+    width: 50%;
+}
+
+.input_song_videoId {
+    width: 100%;
+    font-size: 16px !important;
+    line-height: 35px;
+    height: 35px !important;
+}
+
+.input_song_rm_btn {
+    cursor: default;
+    z-index: 99;
+    width: 50%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 35px;    
+    height: 35px;
+    line-height: 35px;
+    background-color: #6f787d;
+}
+
+.input_song_rm_btn:hover {
+    background-color: #BF360C;
+    color: #ECEFF1;    
+}
+
+.page_container {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    overflow: hidden;
+
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    position: fixed;
+    opacity: 0.2;
+    background-color: blue;
+    display: none;
+}
+
 .playlistFormContainer {
-    top: 35%;
+    top: 15%;
     left: 35%;
+
     padding: 17px;
     border-radius: 8px;
     position: absolute;
-    min-width: 500px;
+    width: 540px;
     z-index: 100;
-    background-color: yellow;
+    background-color: #131d20;
     display: none;
 }
 
@@ -16,20 +82,86 @@
     border: 0;
     outline: 0;
     background: transparent;
-    border-bottom: 2px solid black;
+    /*border-bottom: 1px solid #B0BEC5;*/
     width: 20px;    
 }
 
 .playlistCancelBtn {
+    cursor: default;
+    color: #dde0e1;
+    margin-bottom: 16px !important;
     margin: 0;
     padding: 0;
     float: right;
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
     text-align: center;
-    border-radius: 50%;
+    border: 2px solid #263238;
+    /*border-radius: 50%;*/
     overflow:hidden;
-    
-    background: #4679BD; 
-    box-shadow: 0 0 3px gray;
+    text-align: center;
+    vertical-align: middle;     
+}
+
+.playlistCancelBtn:hover {
+    /*background-color: #1b2998;*/
+    color: #ECEFF1;
+    border: 2px solid #ECEFF1;
+}
+
+
+/*BOTTOM GROUP BUTTONS*/
+.form_main_btns {
+    width: 100%;
+    display: flex;
+    padding-top: 1px;
+}
+
+.add_song_input_btn {
+    color: #ECEFF1;
+    background-color: #131d20;
+    cursor: default;
+    width: 33.3%;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    vertical-align: middle; 
+}
+
+.add_song_input_btn:hover {
+    background-color: #768287;
+}
+
+.submit_btn {
+    color: #ECEFF1;
+    background-color: #131d20;
+    border-left: 1px solid #263238;
+    border-right: 1px solid #263238;
+    cursor: default;
+    width: 33.3%;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    vertical-align: middle; 
+}
+
+.submit_btn:hover {
+    background-color: #1b2998;
+}
+
+.delete_playlist_btn {
+    color: #ECEFF1;
+    background-color: #131d20;
+    cursor: default;
+    width: 33.3%;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    vertical-align: middle; 
+}
+
+.delete_playlist_btn:hover { 
+    background-color: #BF360C;
+
 }
