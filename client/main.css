@@ -5,9 +5,9 @@ html {
 
 body {
     height: 100%;
-    /*background-color: blue;*/
+    /*background-color: #FF5722;*/
     background-color: #ECEFF1;
-    /*margin: 0 0 300px;*/
+    margin: 0 0 200px;
 }
 
 div, h1, input, img {
@@ -18,23 +18,43 @@ div, h1, input, img {
 .container {
     width: 100%;
     height: 100%;
-    /*background-color: orange;*/
 }
 
 .player_playlist_container {
-    display: inline-flex;
-    width: 100%;
-    /*background-color: orange;*/
+    /*display: inline-block;*/
+    width: 85%;
+    height: 500px;
+    /*background-color: purple;*/
+    margin-left: 14%;
 }
 
 .player_container {
-    width: 50%;
+    /*padding-left: 20%;*/
+
+    display: inline-block; 
+    position: relative;
+    /*left: 16%;*/
+    width: 640px;
+    right: 2%;
+    float: left;
+    /*background-color: orange;*/
 }
 
 .playlist_container {
+    display: inline-block; 
+    /*float: left;*/
+    /*left: 2%;*/
+    position: relative;
     top: 35px;
-    /*width: 50%;*/
+    width: 500px;
+    /*background-color: blue;*/
 }
+
+.list_of_playlists {
+    width: 500px;
+    /*left: 3%;*/
+}
+
 
 .player {
     width: 640px;
@@ -43,7 +63,6 @@ div, h1, input, img {
     float: right;
     /*margin-left: 10%;*/
     /*margin-right: 25%;*/
-    position: relative;
     /*display: inline-block;*/
 }
 
@@ -108,14 +127,6 @@ div, h1, input, img {
 
 .prev_next_btn {
     margin-top: 10px;
-}
-
-.list_of_playlists {
-    width: 450px;
-    float: left;
-    left: 3%;
-    position: relative;
-    top: 35px;
 }
 
 /*PLAYER CONTROLS*/

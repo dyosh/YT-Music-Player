@@ -65,10 +65,10 @@ input {
 
 .playlistFormContainer {
     top: 15%;
-    right: 50%;
+    left: 35%;
     padding: 17px;
     border-radius: 8px;
-    position: absolute;
+    position: fixed;
     width: 540px;
     z-index: 100;
     background-color: #131d20;

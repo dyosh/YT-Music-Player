@@ -1,9 +1,8 @@
 footer {
-    background-color: #afbec5;
     position: absolute;
-    left: 0;
     bottom: 0;
-    height: 150px;
+    height: 142px;
+    background: orange;
     width: 100%;
-    overflow: hidden;
+    opacity: 0.4;
 }
